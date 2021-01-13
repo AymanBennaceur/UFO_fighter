@@ -28,9 +28,9 @@ def settings():
         mx, my = pygame.mouse.get_pos()
         screen.fill((255, 0, 43))
         # Pygame event forloop
-        circ1 = pygame.draw.circle(screen,(0,0,0),(100,270),40)
-        circ2 = pygame.draw.circle(screen,(0,0,0),(250,270),40)
-        circ3 = pygame.draw.circle(screen,(0,0,0),(400,270),40)
+        circ1 = pygame.draw.circle(screen,(255,255,0),(100,270),40)
+        circ2 = pygame.draw.circle(screen,(255,255,0),(250,270),40)
+        circ3 = pygame.draw.circle(screen,(255,255,0),(400,270),40)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 cond = False
@@ -43,13 +43,18 @@ def settings():
                 if event.button == 1 and circ2.collidepoint(mx,my):
                     viteX = 0.4
                 if event.button == 1 and circ3.collidepoint(mx,my):
-                    viteX = 0.8
-            if viteX == 0.2:
-                circ1 = pygame.draw.circle(screen,(255,255,255),(100,270),50)
+                    viteX = 0.8 
+        if viteX == 0.2:
+            circ1 = pygame.draw.circle(screen,(255, 255, 255),(100,270),40)
+        if viteX == 0.4:
+            circ2 = pygame.draw.circle(screen,(255, 255, 255),(250,270),40)
+        if viteX == 0.8:
+            circ3 = pygame.draw.circle(screen,(255, 255, 255),(400,270),40)
+        
         #rectangle from menu 
-        easy_blit = easy.render('easy',True,(255,255,255))
-        medium_blit = medium.render('Medium ',True,(255,255,255))
-        hard_blit = hard.render('Hard',True,(255,255,255))
+        easy_blit = easy.render('easy',True,(0,0,0))
+        medium_blit = medium.render('Medium ',True,(0,0,0))
+        hard_blit = hard.render('Hard',True,(0,0,0))
         screen.blit(easy_blit, (100,260))
         screen.blit(medium_blit, (250,260))
         screen.blit(hard_blit, (400,260))
