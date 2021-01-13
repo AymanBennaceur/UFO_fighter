@@ -4,7 +4,7 @@ import math
 from pygame import mixer
 # initialize the game
 pygame.init()
-
+viteX = 0.2
 # create screen and background image
 xcord = 500
 ycord = 600
@@ -16,14 +16,21 @@ pygame.display.set_caption("Fighter Jet")
 icon = pygame.image.load('plane.png')
 pygame.display.set_icon(icon)
 def settings():
+    global viteX
+    easy = pygame.font.Font('freesansbold.ttf',27)
+    medium = pygame.font.Font('freesansbold.ttf',27)
+    hard = pygame.font.Font('freesansbold.ttf',27)
     difficulty = pygame.font.Font('freesansbold.ttf',32)
-    dX= 20
+    dX= 60
     dY = 50
     cond = True
     while cond:
         mx, my = pygame.mouse.get_pos()
         screen.fill((255, 0, 43))
         # Pygame event forloop
+        circ1 = pygame.draw.circle(screen,(0,0,0),(100,270),40)
+        circ2 = pygame.draw.circle(screen,(0,0,0),(250,270),40)
+        circ3 = pygame.draw.circle(screen,(0,0,0),(400,270),40)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 cond = False
@@ -32,10 +39,22 @@ def settings():
                     main_menu() 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1 and circ1.collidepoint(mx,my):
+                    viteX = 0.2
+                if event.button == 1 and circ2.collidepoint(mx,my):
+                    viteX = 0.4
+                if event.button == 1 and circ3.collidepoint(mx,my):
+                    viteX = 0.8
+            if viteX == 0.2:
+                circ1 = pygame.draw.circle(screen,(255,255,255),(100,270),50)
         #rectangle from menu 
-        circ1 = pygame.draw.circle(screen,(0,0,0),(180,270),40)
-        circ2 = pygame.draw.circle(screen,(0,0,0),(330,270),40)
-        #text render  
+        easy_blit = easy.render('easy',True,(255,255,255))
+        medium_blit = medium.render('Medium ',True,(255,255,255))
+        hard_blit = hard.render('Hard',True,(255,255,255))
+        screen.blit(easy_blit, (100,260))
+        screen.blit(medium_blit, (250,260))
+        screen.blit(hard_blit, (400,260))
+
+    #text render  
         difficulty_blit = difficulty.render('choose level of difficulty',True,(255,255,255))
         screen.blit(difficulty_blit, (dX,dY))
         pygame.display.update()
@@ -68,6 +87,7 @@ def main_menu():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1 and circle1.collidepoint(mx,my):
                     play()
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1 and circle2.collidepoint(mx,my):
                     settings()
@@ -91,6 +111,7 @@ def main_menu():
         
 
 def play():
+    global viteX
     background = pygame.image.load('33932.jpg')
     # jet image + parametres
     playerImg = pygame.image.load('jet.png')
@@ -101,7 +122,7 @@ def play():
     enemyImg = pygame.image.load('ufo.png')
     enemyX = random.randint(0,436)
     enemyY = random.randint(50,100)
-    enemyX_change = 0.2
+    enemyX_change = viteX
     enemyY_change = 40
     num_ennemies = 6
     '''
@@ -203,11 +224,11 @@ def play():
         enemyX += enemyX_change 
         if enemyX  < 0:
             enemyX  = 0
-            enemyX_change  = 0.3
+            enemyX_change  = viteX
             enemyY  += enemyY_change 
         elif enemyX  > (xcord-64):
             enemyX  = xcord-64
-            enemyX_change  = -0.3
+            enemyX_change  = -viteX
             enemyY  += enemyY_change 
         #collision parametres
         check_col = collision(enemyX,enemyY,BulletX,BulletY)
